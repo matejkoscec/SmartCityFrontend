@@ -25,6 +25,8 @@ export default function App() {
           <Routes>
             <Route path="/" element={<ApplicationFrame />}>
               <Route path="/" element={<>Home</>} />
+              <Route path="map" element={<>Map</>} />
+              <Route path="profile" element={<>Profile</>} />
             </Route>
           </Routes>
         </ClientProvider>
