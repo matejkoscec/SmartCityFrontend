@@ -11,6 +11,7 @@ type UserResponse = {
   id: number;
   preferredUsername: string;
   name: string;
+  roles: { name: string; }[];
 };
 
 export default function AuthProvider({ children }: { children: React.ReactNode }) {
@@ -43,7 +44,7 @@ export default function AuthProvider({ children }: { children: React.ReactNode }
         headers: { Authorization: `Bearer ${token}` },
       })
         .then((res) => res.json())
-        .then((res) => res as UserResponse),
+        .then((res) => res as { user: UserResponse }),
     enabled: !isPending || token === undefined,
     staleTime: 1000 * 5,
   });
@@ -56,7 +57,7 @@ export default function AuthProvider({ children }: { children: React.ReactNode }
   }, [isError, navigate]);
 
   return (
-    <AuthContext.Provider value={{ user, token, setToken }}>
+    <AuthContext.Provider value={{ user: user?.user, token, setToken }}>
       {isPending ? <>Loading...</> : children}
     </AuthContext.Provider>
   );

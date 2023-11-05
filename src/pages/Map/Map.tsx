@@ -31,6 +31,7 @@ export type MapProps = {
   locationsContent?: (location: ParkingSpotResponse) => ReactNode;
   locationsImgSrc?: (location: ParkingSpotResponse) => string;
   dynamicMarkerContent?: (latLng: LatLng) => ReactNode;
+  dynamicMarkerOnSet?: (latLng: { lat: number; lng: number }) => void;
   onZoom?: (zoom: number) => void;
   className?: string;
   dragging?: boolean;
@@ -46,6 +47,7 @@ export default function Map({
   locationsContent,
   locationsImgSrc,
   dynamicMarkerContent,
+  dynamicMarkerOnSet,
   onZoom,
   className,
   dragging,
@@ -86,7 +88,7 @@ export default function Map({
             iconSize: [16, 16],
             iconAnchor: [8, 10],
             popupAnchor: [0, 0],
-            iconUrl: locationsImgSrc?.(l) ?? locationPinSrc
+            iconUrl: locationsImgSrc?.(l) ?? locationPinSrc,
           });
 
           return (
@@ -97,7 +99,12 @@ export default function Map({
             </Marker>
           );
         })}
-        <LocationMarker dynamicMarkerContent={dynamicMarkerContent} onZoom={onZoom} setMap={setMap} />
+        <LocationMarker
+          dynamicMarkerContent={dynamicMarkerContent}
+          dynamicMarkerOnSet={dynamicMarkerOnSet}
+          onZoom={onZoom}
+          setMap={setMap}
+        />
       </>
     </MapContainer>
   );
@@ -112,16 +119,18 @@ const pinIcon = new Icon({
 
 type LocationMarkerProps = {
   dynamicMarkerContent?: (latLng: LatLng) => ReactNode;
+  dynamicMarkerOnSet?: (latLng: { lat: number; lng: number }) => void;
   onZoom?: (zoom: number) => void;
   setMap?: (map: LeafletMap) => void;
 };
 
-function LocationMarker({ dynamicMarkerContent, onZoom, setMap }: LocationMarkerProps) {
+function LocationMarker({ dynamicMarkerContent, dynamicMarkerOnSet, onZoom, setMap }: LocationMarkerProps) {
   const [position, setPosition] = useState<LatLng | null>(null);
 
   const map = useMapEvents({
     click(e) {
       setPosition(e.latlng);
+      dynamicMarkerOnSet?.({ lat: e.latlng.lat, lng: e.latlng.lng });
       // map.locate();
     },
     /* locationfound(e) {
@@ -137,7 +146,11 @@ function LocationMarker({ dynamicMarkerContent, onZoom, setMap }: LocationMarker
     if (map) setMap?.(map);
   }, [map, setMap]);
 
-  return position === null ? null : (
+  if (position === null) {
+    return null;
+  }
+
+  return (
     <Marker position={position} icon={pinIcon}>
       {dynamicMarkerContent && <Popup className="custom-popup">{dynamicMarkerContent(position)}</Popup>}
     </Marker>

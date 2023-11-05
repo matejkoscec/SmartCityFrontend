@@ -5,6 +5,7 @@ import { Toaster } from "@/components/ui/toaster.tsx";
 import ApplicationFrame from "@/pages/ApplicationFrame.tsx";
 import Login from "@/pages/Login/Login.tsx";
 import MapPage from "@/pages/Map/MapPage.tsx";
+import ParkingList from "@/pages/Parking/ParkingList.tsx";
 import Profile from "@/pages/Profile/Profile.tsx";
 import Register from "@/pages/Register/Register.tsx";
 import AuthProvider from "@/provider/AuthProvider.tsx";
@@ -30,9 +31,9 @@ export default function App() {
             <Toaster />
             <Routes>
               <Route path="/" element={<ApplicationFrame />}>
-                <Route path="/" element={<>Home</>} />
                 <Route path="map" element={<MapPage />} />
                 <Route path="profile" element={<Profile />} />
+                <Route path="parking" element={<ParkingList />} />
               </Route>
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />

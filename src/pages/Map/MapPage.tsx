@@ -16,21 +16,30 @@ import { Label } from "@/components/ui/label.tsx";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select.tsx";
 import { Switch } from "@/components/ui/switch.tsx";
 
-type Form = { place: string; zone: string; occupied: boolean };
+type Form = {
+  latitude?: number;
+  longitude?: number;
+  radius?: number;
+  parkingZone?: number;
+  isOccupied?: boolean;
+  price?: number;
+};
 
 export default function MapPage() {
-  const { data, isLoading, isError } = useGetAllParkingSpots();
+  const [filter, setFilter] = useState<Form>({});
+  const { data, isError } = useGetAllParkingSpots(filter);
   const { data: response, mutate, isPending } = useGetReverseLocationInfo();
 
   const [selectedLocation, setSelectedLocation] = useState<ParkingSpotResponse | null>(null);
 
-  const { register, handleSubmit, setValue } = useForm<Form>();
+  const { handleSubmit, setValue, reset } = useForm<Form>();
+  const [latLng, setLatLng] = useState<{ lat: number; lng: number } | null>(null);
 
-  const onSubmit: SubmitHandler<Form> = (data) => console.log(data);
+  const onSubmit: SubmitHandler<Form> = (data) => {
+    console.log(data);
+    setFilter({ ...data, radius: 0.5 });
+  };
 
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
   if (isError) {
     return <div>Error</div>;
   }
@@ -41,30 +50,44 @@ export default function MapPage() {
         <form className="flex items-center flex-grow w-full gap-8" onSubmit={handleSubmit(onSubmit)}>
           <div className="flex flex-col gap-1">
             <Label htmlFor="place">Place</Label>
-            <Input id="place" {...register("place")} />
+            <Input id="place" name="place" onChange={() => console.log("")} />
           </div>
           <div className="flex flex-col gap-1">
-            <Label htmlFor="zone">Zone</Label>
-            <Select onValueChange={(val) => setValue("zone", val)}>
+            <Label htmlFor="parkingZone">Zone</Label>
+            <Select onValueChange={(val) => setValue("parkingZone", Number(val))}>
               <SelectTrigger className="w-[180px]">
                 <SelectValue placeholder="Select Zone..." />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="1">Zone 1</SelectItem>
-                <SelectItem value="2">Zone 2</SelectItem>
-                <SelectItem value="3">Zone 3</SelectItem>
-                <SelectItem value="4">Zone 4</SelectItem>
+                <SelectItem value="0">Zone 1</SelectItem>
+                <SelectItem value="1">Zone 2</SelectItem>
+                <SelectItem value="2">Zone 3</SelectItem>
+                <SelectItem value="3">Zone 4</SelectItem>
               </SelectContent>
             </Select>
           </div>
           <div className="flex flex-col gap-1">
-            <Label htmlFor="occupied">Occupied</Label>
+            <Label htmlFor="isOccupied">Occupied</Label>
             <div className="h-10 flex items-center">
-              <Switch onCheckedChange={(val) => setValue("occupied", val)} />
+              <Switch onCheckedChange={(val) => setValue("isOccupied", val)} />
             </div>
           </div>
+          <span>{`Lat: ${latLng?.lat.toFixed(5) ?? "-"}`}</span>
+          <span>{`Lng: ${latLng?.lng.toFixed(5) ?? "-"}`}</span>
+          <span>{`Radius: 500m`}</span>
           <Button type={"submit"} className="ml-10">
             Filter
+          </Button>
+          <Button
+            type={"button"}
+            variant={"outline"}
+            className=""
+            onClick={() => {
+              reset();
+              setFilter({});
+            }}
+          >
+            Reset
           </Button>
         </form>
       </div>
@@ -157,6 +180,11 @@ export default function MapPage() {
                   <div className="m-0">{`Longitude: ${lng}`}</div>
                 </div>
               )}
+              dynamicMarkerOnSet={({ lat, lng }) => {
+                setLatLng({ lat, lng });
+                setValue("latitude", lat);
+                setValue("longitude", lng);
+              }}
               className="h-full flex-grow shadow-md rounded-l-2xl"
             />
           </div>

@@ -1,4 +1,3 @@
-import { useQueryClient } from "@tanstack/react-query";
 import { Loader2 } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
@@ -9,6 +8,8 @@ import { Button } from "@/components/ui/button.tsx";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card.tsx";
 import { toast } from "@/components/ui/use-toast.ts";
 import { useAuth } from "@/provider/AuthProvider.tsx";
+import logoSrc from "@/assets/logo.png";
+import { AspectRatio } from "@/components/ui/aspect-ratio.tsx";
 
 type LoginForm = {
   email: string;
@@ -29,12 +30,10 @@ export default function Login() {
   } = useForm<LoginForm>({ defaultValues });
   const { setToken } = useAuth();
   const navigate = useNavigate();
-  const queryClient = useQueryClient();
 
   const { mutate: login, isPending } = useLogin(
     (data) => {
       setToken(data.token);
-      // await queryClient.refetchQueries({ queryKey: ["currentUser"] });
       navigate("/");
     },
     () => {
@@ -49,8 +48,12 @@ export default function Login() {
   return (
     <div className="min-w-screen flex min-h-screen flex-col items-center justify-center gap-6 bg-accent p-10">
       <div className="-mt-10 flex flex-col items-center">
-        <div className="w-16"></div>
-        <h2 className="text-xl font-bold">Parking</h2>
+        <div className="w-16">
+          <AspectRatio ratio={6 / 5} className="-mt-0.5">
+            <img src={logoSrc} alt="Image" />
+          </AspectRatio>
+        </div>
+        <h2 className="text-xl font-bold">ParkirAI</h2>
       </div>
       <form onSubmit={handleSubmit((data) => login(data))}>
         <Card className="w-96 p-2">

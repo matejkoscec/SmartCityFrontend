@@ -7,6 +7,8 @@ import { useRegister } from "@/api/auth/auth.ts";
 import FormInput from "@/components/form/FormInput.tsx";
 import { Button } from "@/components/ui/button.tsx";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card.tsx";
+import { AspectRatio } from "@/components/ui/aspect-ratio.tsx";
+import logoSrc from "@/assets/logo.png";
 
 export const emailRegex =
   /^[a-zA-Z0-9.!#$%&'*+\\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
@@ -44,8 +46,12 @@ export default function Register() {
   return (
     <div className="min-w-screen flex min-h-screen flex-col items-center justify-center gap-6 bg-accent p-10">
       <div className="-mt-10 flex flex-col items-center">
-        <div className="w-16"></div>
-        <h2 className="text-xl font-bold">Parking</h2>
+        <div className="w-16">
+          <AspectRatio ratio={6 / 5} className="-mt-0.5">
+            <img src={logoSrc} alt="Image" />
+          </AspectRatio>
+        </div>
+        <h2 className="text-xl font-bold">ParkirAI</h2>
       </div>
       <form onSubmit={handleSubmit((data) => login(data))}>
         <Card className="w-96 p-2">
