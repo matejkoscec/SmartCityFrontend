@@ -1,8 +1,9 @@
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
+import {BrowserRouter, Route, Routes} from "react-router-dom";
 
-import { Toaster } from "@/components/ui/toaster.tsx";
+import {Toaster} from "@/components/ui/toaster.tsx";
 import ApplicationFrame from "@/pages/ApplicationFrame.tsx";
+import Home from "@/pages/Home/Home.tsx";
 import Login from "@/pages/Login/Login.tsx";
 import MapPage from "@/pages/Map/MapPage.tsx";
 import ParkingList from "@/pages/Parking/ParkingList.tsx";
@@ -31,6 +32,7 @@ export default function App() {
             <Toaster />
             <Routes>
               <Route path="/" element={<ApplicationFrame />}>
+                <Route path="/" element={<Home/>} />
                 <Route path="map" element={<MapPage />} />
                 <Route path="profile" element={<Profile />} />
                 <Route path="parking" element={<ParkingList />} />
