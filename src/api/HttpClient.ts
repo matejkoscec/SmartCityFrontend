@@ -1,15 +1,18 @@
 export default class HttpClient {
   basePath: string;
   loggingEnabled: boolean = false;
-  onError: (errorResponse: ErrorResponse) => Promise<void> | void;
+  token?: string;
+  onError?: (errorResponse: ErrorResponse) => Promise<void> | void;
 
   constructor(
     basePath: string,
     loggingEnabled: boolean,
-    onError: (errorResponse: ErrorResponse) => Promise<void> | void,
+    token?: string,
+    onError?: (errorResponse: ErrorResponse) => Promise<void> | void
   ) {
     this.basePath = basePath;
     this.loggingEnabled = loggingEnabled;
+    this.token = token;
     this.onError = onError;
   }
 
@@ -41,6 +44,7 @@ export default class HttpClient {
       body: JSON.stringify(body),
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${this.token}`,
       },
       ...config?.fetchConfig,
     });
@@ -50,7 +54,7 @@ export default class HttpClient {
 
       const contentLength = response.headers.get("content-length");
       if (contentLength && !Number(contentLength)) {
-        await this.onError(defaultErrorResponse);
+        await this.onError?.(defaultErrorResponse);
         throw new FetchError("FetchError", response.status, undefined);
       }
 
@@ -63,7 +67,7 @@ export default class HttpClient {
         }
       }
 
-      await this.onError(errorResponse);
+      await this.onError?.(errorResponse);
 
       throw new FetchError("FetchError", response.status, errorResponse);
     }

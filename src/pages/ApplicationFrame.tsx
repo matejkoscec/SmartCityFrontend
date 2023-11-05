@@ -1,9 +1,8 @@
 import { ReactNode } from "react";
 
-import { BarChart3, User } from "lucide-react";
+import { BarChart3, User, User2 } from "lucide-react";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar.tsx";
 import { Button } from "@/components/ui/button.tsx";
 import {
   DropdownMenu,
@@ -14,20 +13,19 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu.tsx";
+import { useAuth } from "@/provider/AuthProvider.tsx";
 
 export default function ApplicationFrame() {
+  const { user } = useAuth();
+  console.log(user);
+
   return (
     <div className="min-h-screen bg-background">
       <div
         className="fixed flex h-16 w-full items-center gap-4 bg-background px-6 drop-shadow-md"
         style={{ zIndex: 9999 }}
       >
-        <div className="w-10">
-          {/*<AspectRatio ratio={6 / 5}>*/}
-          {/*  <img src={src} alt="Image" />*/}
-          {/*</AspectRatio>*/}
-          LOGO
-        </div>
+        <div className="w-10">LOGO</div>
         <div className="flex flex-grow items-center pl-6 text-primary-foreground">
           <NavButton to="/">Home</NavButton>
           <NavButton to="/map">Map</NavButton>
@@ -35,10 +33,10 @@ export default function ApplicationFrame() {
         <div>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Avatar>
-                <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
-                <AvatarFallback>CN</AvatarFallback>
-              </Avatar>
+              <div className="flex items-center">
+                <User2 className="h-16 rounded-full" />
+                {user?.name}
+              </div>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-56" style={{ zIndex: 9999 }}>
               <DropdownMenuLabel>My Account</DropdownMenuLabel>
