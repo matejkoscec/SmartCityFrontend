@@ -1,5 +1,3 @@
-import { basePath } from "@/api/paths.ts";
-
 export default class HttpClient {
   basePath: string;
   loggingEnabled: boolean = false;
@@ -33,7 +31,7 @@ export default class HttpClient {
 
   private async execute<B, R>(method: string, path: string, body?: B, config?: Config): Promise<R> {
     const ignoreBasePath = path.startsWith("http");
-    let fullPath = `${ignoreBasePath ? "" : basePath}${path}`;
+    let fullPath = `${ignoreBasePath ? "" : this.basePath}${path}`;
     if (config?.params) {
       fullPath += `?${new URLSearchParams(config.params).toString()}`;
     }

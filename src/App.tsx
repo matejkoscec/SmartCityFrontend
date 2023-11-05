@@ -3,6 +3,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 import { Toaster } from "@/components/ui/toaster.tsx";
 import ApplicationFrame from "@/pages/ApplicationFrame.tsx";
+import MapPage from "@/pages/Map/MapPage.tsx";
 import ClientProvider from "@/provider/ClientProvider.tsx";
 
 const queryClient = new QueryClient({
@@ -25,7 +26,7 @@ export default function App() {
           <Routes>
             <Route path="/" element={<ApplicationFrame />}>
               <Route path="/" element={<>Home</>} />
-              <Route path="map" element={<>Map</>} />
+              <Route path="map" element={<MapPage />} />
               <Route path="profile" element={<>Profile</>} />
             </Route>
           </Routes>

@@ -58,7 +58,7 @@ export default function ApplicationFrame() {
         </div>
       </div>
       <div className="h-16"></div>
-      <div className="pb-8">
+      <div>
         <Outlet />
       </div>
     </div>
