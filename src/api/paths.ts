@@ -9,5 +9,10 @@ export default {
     register: "/register",
     currentUser: "/current-user",
     refresh: "/refresh",
+  },
+  reservations: {
+    all: "/reservation/get-reservations",
+    create: "/reservation/create",
+    delete: "/reservation/delete",
   }
 } as const;
