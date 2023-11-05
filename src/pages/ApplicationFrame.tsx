@@ -3,6 +3,8 @@ import { ReactNode } from "react";
 import { BarChart3, ParkingSquare, User, User2 } from "lucide-react";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 
+import logoSrc from "@/assets/logo.png";
+import { AspectRatio } from "@/components/ui/aspect-ratio.tsx";
 import { Button } from "@/components/ui/button.tsx";
 import {
   DropdownMenu,
@@ -14,8 +16,6 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu.tsx";
 import { useAuth } from "@/provider/AuthProvider.tsx";
-import logoSrc from "@/assets/logo.png";
-import { AspectRatio } from "@/components/ui/aspect-ratio.tsx";
 
 export default function ApplicationFrame() {
   const { user } = useAuth();
@@ -55,7 +55,7 @@ export default function ApplicationFrame() {
               <DropdownMenuSeparator />
               <DropdownMenuLabel>Admin</DropdownMenuLabel>
               <DropdownMenuGroup>
-                <DropdownMenuItem>
+                <DropdownMenuItem onClick={() => navigate("/dashboard")}>
                   <BarChart3 className="mr-2 h-4 w-4" />
                   <span>Dashboard</span>
                 </DropdownMenuItem>

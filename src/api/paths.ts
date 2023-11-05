@@ -17,5 +17,8 @@ export default {
     all: "/reservation/get-reservations",
     create: "/reservation/create",
     delete: "/reservation/delete",
+  },
+  analytics: {
+    zoneOccupancy: "/analytics/get-zone-occupancy",
   }
 } as const;

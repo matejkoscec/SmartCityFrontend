@@ -11,6 +11,7 @@ import Profile from "@/pages/Profile/Profile.tsx";
 import Register from "@/pages/Register/Register.tsx";
 import AuthProvider from "@/provider/AuthProvider.tsx";
 import ClientProvider from "@/provider/ClientProvider.tsx";
+import Dashboard from "@/pages/Dashboard/Dashboard.tsx";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -36,6 +37,7 @@ export default function App() {
                 <Route path="map" element={<MapPage />} />
                 <Route path="profile" element={<Profile />} />
                 <Route path="parking" element={<ParkingList />} />
+                <Route path="dashboard" element={<Dashboard />} />
               </Route>
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
